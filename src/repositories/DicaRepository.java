@@ -1,7 +1,7 @@
 package repositories;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
 
 import entities.Dica;
 import validators.ValidadorDica;
@@ -12,14 +12,15 @@ import validators.ValidadorDica;
  */
 
 public class DicaRepository {
-
-	private List<Dica> dicas;
+	
+	private HashMap<Integer, Dica> dicas;
+	private int dicasID = 1;
 	
 	/**
      * Cria um novo repositório de dicas.
      */
 	public DicaRepository() {
-		this.dicas = new ArrayList<>();
+		this.dicas = new HashMap<>();
 	}
 	
 	/**
@@ -31,24 +32,24 @@ public class DicaRepository {
      */
 	public int adicionaDica(Dica dica) {
 		ValidadorDica.validaDica(dica);
-		return (this.dicas.add(dica)) ? this.dicas.size() : 0;
+		this.dicas.put(dicasID, dica);
+		if (dicas.size()>0) {
+			dicasID++;
+			return dicas.size();
+		} else
+			return 0;
 	}
 	
 	/**
      * Retorna uma lista das dicas como strings.
      *
      * @return um array de strings representando as dicas
-     */
+    */
 	public String[] listaDicas() {
 		if (this.dicas.size() == 0) {
 			return new String[0];
 		}
-		String[] lista = new String[this.dicas.size()];
-		int i = 0;
-		for (Dica dica : dicas) {
-			lista[i++] = dica.toString();
-		}
-		return lista;
+		return converteParaArrayDeString(this.dicas.values());
 	}
 	
 	/**
@@ -62,7 +63,7 @@ public class DicaRepository {
 		}
 		String[] lista = new String[this.dicas.size()];
 		int i = 0;
-		for (Dica dica : dicas) {
+		for (Dica dica : dicas.values()) {
 			lista[i++] = dica.exibeDetalhes();
 		}
 		return lista;
@@ -99,6 +100,16 @@ public class DicaRepository {
      */
 	public Dica buscaDica(int posicao) {
 		ValidadorDica.validaPosicao(posicao, this.dicas.size());
-		return this.dicas.get(posicao - 1);
+		return this.dicas.get(posicao);
 	}
+
+	private <T> String[] converteParaArrayDeString(Collection<T> colecao) {
+		String[] lista = new String[colecao.size()];
+		int i = 0;
+		for (T elemento : colecao) {
+			lista[i++] = elemento.toString();
+		}
+		return lista;
+	}
+
 }

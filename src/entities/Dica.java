@@ -15,7 +15,6 @@ import validators.ValidadorUsuario;
  */
 
 public class Dica {
-
 	private Usuario autor;
 	private TipoAtividadeComplementar tema;
 	private List<Elemento> elementos;
@@ -29,11 +28,11 @@ public class Dica {
      */
 	public Dica(Usuario autor, String tema) {
 		ValidadorUsuario.validaUsuario(autor);
-		
 		this.autor = autor;
 		this.tema = TipoAtividadeComplementar.fromTipo(tema);
 		this.elementos = new ArrayList<>();
 	}
+
 	
 	/**
      * Adiciona um elemento do tipo texto à dica.
@@ -126,4 +125,6 @@ public class Dica {
 	private void bonificaAutor(int bonificacao) {
 		this.autor.recebeBonificacao(bonificacao);
 	}
+
+	
 }

@@ -3,9 +3,7 @@ package repositories;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import entities.Usuario;
 import validators.ValidadorUsuario;
@@ -18,13 +16,13 @@ import validators.ValidadorUsuario;
 
 public class UsuarioRepository {
 
-	private Map<String, Usuario> estudantes;
-	
+	private ArrayList<Usuario> estudantes;
+
 	/**
      * Cria um novo repositório de usuários.
      */
 	public UsuarioRepository() {
-		this.estudantes = new HashMap<>();
+		this.estudantes = new ArrayList<Usuario>();
 	}
 	
 	/**
@@ -35,15 +33,14 @@ public class UsuarioRepository {
      * @return true se o estudante foi adicionado com sucesso, false se já existe um estudante com o mesmo CPF
      * @throws NullPointerException se o estudante for nulo
      */
-	public boolean adicionaEstudante(String cpf, Usuario estudante) {
+	public boolean adicionaEstudante(Usuario estudante) {
 		ValidadorUsuario.validaUsuario(estudante);
-		
-		if (this.estudantes.containsKey(cpf)) {
+		if (this.estudantes.contains(estudante)) {
 			return false;
 		}
-		this.estudantes.put(cpf, estudante);
+		this.estudantes.add(estudante);
 		return true;
-	}
+	} //Adaptado para adicionar o estudante num ArrayList se ele já não estiver presente.
 	
 	/**
      * Lista todos os estudantes no repositório como um array de strings.
@@ -54,10 +51,10 @@ public class UsuarioRepository {
 		if (this.estudantes.size() == 0) {
 			return new String[0];
 		}
-		List<Usuario> listaOrdenadaPeloNome = new ArrayList<>(this.estudantes.values());
+		List<Usuario> listaOrdenadaPeloNome = new ArrayList<>(this.estudantes);
 		listaOrdenadaPeloNome.sort(null);
 		return converteParaArrayDeString(listaOrdenadaPeloNome);
-	}
+	} //Não precisei mexer pois o método já se utilizava de Listas e portanto os métodos estavam coerentes.
 	
 	/**
 	 * Lista todos os estudantes ordenados por bonificação em ordem decrescente.
@@ -68,10 +65,11 @@ public class UsuarioRepository {
 		if (this.estudantes.size() == 0) {
 			return new String[0];
 		}
-		List<Usuario> listaOrdenadaPelaBonificacao = new ArrayList<>(this.estudantes.values());
+		List<Usuario> listaOrdenadaPelaBonificacao = new ArrayList<>(this.estudantes);
 		listaOrdenadaPelaBonificacao.sort(Comparator.comparing(Usuario::getBonificacao).reversed());
 		return converteParaArrayDeString(listaOrdenadaPelaBonificacao);
-	}
+	} //Não precisei mexer pois o método já se utilizava de Listas e portanto os métodos estavam coerentes.
+
 	
 	/**
      * Busca um estudante no repositório com base no CPF e senha fornecidos.
@@ -83,13 +81,13 @@ public class UsuarioRepository {
      * @throws IllegalArgumentException se as credenciais forem inválidas
      */
 	public Usuario buscaEstudante(String cpf, String senha) {
-		Usuario estudanteProcurado = this.estudantes.get(cpf);
-		ValidadorUsuario.validaUsuario(estudanteProcurado);
-		if (validaSenha(estudanteProcurado, senha)) {
-			return estudanteProcurado;
-		}
-		
+		for (Usuario estudante : this.estudantes) {
+			if (estudante.getCpf().equals(cpf) && validaSenha(estudante, senha)) {
+				return estudante;
+			}
+		}			
 		throw new IllegalArgumentException("Usuário ou senha inválidos");
+		
 	}
 	
 	private boolean validaSenha(Usuario estudante, String senha) {

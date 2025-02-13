@@ -56,9 +56,9 @@ public class RelatorioTest {
 		assertEquals("Nome: Fulano, CPF: 123.456.789-00 - matrícula 123456789, data " + hoje + "\n"
 				+ "Créditos por atividades:\n"
 				+ "PesquisaExtensao: 10\n"
-				+ "Estagio: 12\n"
 				+ "Monitoria: 14\n"
 				+ "RepresentacaoEstudantil: 2\n"
+				+ "Estagio: 12\n"
 				+ "Créditos totais: 38", relatorio.toString());
 	}
 }

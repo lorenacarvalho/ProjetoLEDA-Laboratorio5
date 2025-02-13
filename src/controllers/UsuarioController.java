@@ -28,7 +28,7 @@ public class UsuarioController {
      * @return true se o estudante foi criado com sucesso, false caso contrário
      */
 	public boolean criarEstudante(String nome, String cpf, String senha, String matricula) {
-		return this.usuarioRepository.adicionaEstudante(cpf, new Usuario(nome, cpf, senha, matricula));
+		return this.usuarioRepository.adicionaEstudante(new Usuario(nome, cpf, senha, matricula));
 	}
 	
 	/**
