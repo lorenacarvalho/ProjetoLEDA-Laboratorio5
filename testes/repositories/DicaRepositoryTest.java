@@ -42,11 +42,14 @@ public class DicaRepositoryTest {
         this.dicaRepository.adicionaDica(dica1);
         Dica dica2 = new Dica(new Usuario("Ciclano", "987.654.321-00", "2345", "987654321"), "MONITORIA");
         this.dicaRepository.adicionaDica(dica2);
+        Dica dica3 = new Dica(new Usuario("Ciclano", "987.654.321-01", "1345", "987654721"), "PESQUISAEXTENSAO");
+        this.dicaRepository.adicionaDica(dica3);
 
         String[] dicas = this.dicaRepository.listaDicas();
-        assertEquals(2, dicas.length);
+        assertEquals(3, dicas.length);
         assertEquals(dica1.toString(), dicas[0]);
         assertEquals(dica2.toString(), dicas[1]);
+        assertEquals(dica3.toString(), dicas[2]);
     }
 
     @Test
@@ -86,7 +89,7 @@ public class DicaRepositoryTest {
     void testBuscaDica() {
         Dica dica1 = new Dica(usuarioBase, "PESQUISAEXTENSAO");
         this.dicaRepository.adicionaDica(dica1);
-        assertEquals(dica1, this.dicaRepository.buscaDica(1));
+        assertEquals(dica1.toString(), this.dicaRepository.buscaDica(1).toString());
     }
 
     @Test
@@ -102,4 +105,6 @@ public class DicaRepositoryTest {
             this.dicaRepository.buscaDica(1);
         });
     }
+
+
 }

@@ -65,10 +65,9 @@ public class UsuarioRepository {
 		if (this.estudantes.size() == 0) {
 			return new String[0];
 		}
-		List<Usuario> listaOrdenadaPelaBonificacao = new ArrayList<>(this.estudantes);
-		listaOrdenadaPelaBonificacao.sort(Comparator.comparing(Usuario::getBonificacao).reversed());
-		return converteParaArrayDeString(listaOrdenadaPelaBonificacao);
-	} //Não precisei mexer pois o método já se utilizava de Listas e portanto os métodos estavam coerentes.
+		estudantes.sort(Comparator.comparing(Usuario::getBonificacao).reversed());
+		return converteParaArrayDeString(estudantes);
+	} //Esse método transformava o hash map numa List, para conseguir aplicar o sort. Como agora estudante já é um ArrayList, não precisou.
 
 	
 	/**
@@ -88,7 +87,7 @@ public class UsuarioRepository {
 		}			
 		throw new IllegalArgumentException("Usuário ou senha inválidos");
 		
-	}
+	} // Agora esse método varre toda o ArrayList procurando pelo usuário que possua o CPF requisitado.
 	
 	private boolean validaSenha(Usuario estudante, String senha) {
 		return estudante.validaSenha(senha);
